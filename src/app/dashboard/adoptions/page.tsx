@@ -61,7 +61,7 @@ export default function AdoptionsDashboard() {
                       </div>
                       <div>
                         <h4 className="font-bold text-foreground">{animal.name}</h4>
-                        <p className="text-xs text-muted font-medium">{animal.breed}</p>
+                        <p className="text-xs text-muted font-medium">{animal.species} • {animal.age} yrs</p>
                       </div>
                     </div>
                     
