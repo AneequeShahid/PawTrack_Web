@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Animal } from '@/lib/types';
-import { Heart, Info } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 export default function AdopterDashboard() {
   const [animals, setAnimals] = useState<Animal[]>([]);

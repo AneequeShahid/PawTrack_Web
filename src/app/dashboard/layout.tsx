@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (sessionData) {
       role = JSON.parse(sessionData).role;
     }
-  } catch (e) {}
+  } catch {}
 
   return <DashboardShell role={role}>{children}</DashboardShell>;
 }
