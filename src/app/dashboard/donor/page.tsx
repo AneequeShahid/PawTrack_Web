@@ -1,0 +1,1 @@
+export default function DonorDashboard() { return <div className="p-8 text-white"><h1>Donor Dashboard</h1></div>; }

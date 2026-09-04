@@ -1,0 +1,1 @@
+export default function VetDashboard() { return <div className="p-8 text-white"><h1>Veterinarian Dashboard</h1></div>; }

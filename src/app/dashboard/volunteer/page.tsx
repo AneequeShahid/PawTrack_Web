@@ -1,0 +1,1 @@
+export default function VolDashboard() { return <div className="p-8 text-white"><h1>Volunteer Dashboard</h1></div>; }

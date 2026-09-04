@@ -1,0 +1,1 @@
+export default function AdopterDashboard() { return <div className="p-8 text-white"><h1>Adopter Dashboard</h1></div>; }

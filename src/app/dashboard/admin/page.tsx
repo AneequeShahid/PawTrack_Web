@@ -1,0 +1,1 @@
+export default function AdminDashboard() { return <div className="p-8 text-white"><h1>Admin Dashboard</h1><p>Full animal roster and system stats go here.</p></div>; }
