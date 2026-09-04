@@ -7,7 +7,7 @@ export default function Login() {
   const [role, setRole] = useState('Admin');
   const router = useRouter();
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     document.cookie = `session={"role":"${role}","username":"${username}"}; path=/`;
     router.push(`/dashboard/${role.toLowerCase()}`);
