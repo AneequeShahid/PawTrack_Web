@@ -4,7 +4,7 @@ import { Animal } from '@/lib/types';
 import { Activity, Heart, Syringe, Users, ArrowUpRight, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { DogMascot, CatMascot } from '@/components/illustrations/Mascots';
+import { DogMascot } from '@/components/illustrations/Mascots';
 
 export default function AdminDashboard() {
   const [animals, setAnimals] = useState<Animal[]>([]);
@@ -23,7 +23,7 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8 pb-20 relative">
       <div className="absolute top-0 right-0 pointer-events-none opacity-10">
-        <CatMascot state="happy" className="w-64 h-64 -mt-20 -mr-20" />
+        <DogMascot state="happy" className="w-64 h-64 -mt-20 -mr-20" />
       </div>
 
       <div className="bg-primary/10 border border-primary/20 rounded-[2.5rem] p-10 flex flex-col md:flex-row items-center justify-between shadow-soft relative overflow-hidden">
@@ -33,7 +33,7 @@ export default function AdminDashboard() {
           </div>
           <h1 className="text-4xl font-heading font-bold text-foreground">Good afternoon, Admin</h1>
           <p className="text-muted font-medium text-lg leading-relaxed">
-            Here's what needs your attention today. You have <strong className="text-primary">{availableAnimals} animals</strong> available for adoption and <strong className="text-warning">{medicalCases} medical cases</strong> requiring attention.
+            Here&apos;s what needs your attention today. You have <strong className="text-primary">{availableAnimals} animals</strong> available for adoption and <strong className="text-warning">{medicalCases} medical cases</strong> requiring attention.
           </p>
         </div>
         <div className="relative z-10 mt-8 md:mt-0">
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
       </div>
       
       <div className="fixed bottom-10 right-10 pointer-events-none opacity-20">
-         <CatMascot state="sleeping" className="w-32 h-32" />
+         <DogMascot state="sleeping" className="w-32 h-32" />
       </div>
     </div>
   );
@@ -104,7 +104,7 @@ function ImpactStat({ number, label }: { number: number, label: string }) {
   );
 }
 
-function AttentionItem({ icon, text, link, router }: { icon: string, text: string, link: string, router: any }) {
+function AttentionItem({ icon, text, link, router }: { icon: string, text: string, link: string, router: ReturnType<typeof useRouter> }) {
   return (
     <div onClick={() => router.push(link)} className="flex items-center gap-4 p-3 rounded-xl hover:bg-black/5 transition-colors cursor-pointer group">
       <div className="w-10 h-10 bg-background border border-border rounded-xl flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">{icon}</div>
