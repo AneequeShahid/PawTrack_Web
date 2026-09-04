@@ -38,9 +38,9 @@ export default function DashboardShell({ children, role, userName }: { children:
       items: role === 'Admin' ? [
         { name: 'Staff & Users', icon: Users, path: '/dashboard/users' },
         { name: 'Reports & Analytics', icon: Activity, path: '/dashboard/reports' },
-        { name: 'Volunteer Tracking', icon: Users, path: '#' },
-        { name: 'Inventory & Supplies', icon: Activity, path: '#' },
-        { name: 'Settings', icon: Users, path: '#' }
+        { name: 'Volunteer Tracking', icon: Users, path: '/dashboard/volunteer-tracking' },
+        { name: 'Inventory & Supplies', icon: Activity, path: '/dashboard/inventory' },
+        { name: 'Settings', icon: Users, path: '/dashboard/settings' }
       ] : []
     }
   ];
