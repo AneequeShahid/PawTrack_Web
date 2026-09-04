@@ -1,5 +1,5 @@
 'use client';
-import { Home, Heart, Users } from 'lucide-react';
+import { Home, Heart } from 'lucide-react';
 import { DogMascot } from '@/components/illustrations/Mascots';
 
 export default function FosterNetwork() {
