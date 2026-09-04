@@ -1,1 +1,1 @@
-export default function AdopterDashboard() { return <div className="p-8 text-white"><h1>Adopter Dashboard</h1></div>; }
+export default function AdopterDashboard() { return <div><h1 className='text-3xl font-bold mb-4'>View & Adopt</h1><div className='bg-[#141C26] p-6 rounded-lg border border-[#263241]'><h2>Available animals grid goes here.</h2></div></div>; }
