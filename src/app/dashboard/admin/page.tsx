@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Animal } from '@/lib/types';
-import { PawPrint, Heart, Activity, Stethoscope, Syringe, Calendar, Users, AlertCircle } from 'lucide-react';
+import { PawPrint, Heart, Stethoscope, Syringe, Users, AlertCircle } from 'lucide-react';
 import { CountUp } from '@/components/ui/CountUp';
 import { motion } from 'framer-motion';
 import { DogMascot } from '@/components/illustrations/Mascots';
@@ -122,14 +122,14 @@ export default function AdminDashboard() {
                  <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center shrink-0"><Syringe size={18} className="text-accent-foreground"/></div>
                  <div>
                    <p className="font-bold text-foreground text-sm">Rabies Booster Due</p>
-                   <p className="text-xs text-muted font-medium">For "Max" (Dog, 4 yrs) • Tomorrow</p>
+                   <p className="text-xs text-muted font-medium">For &quot;Max&quot; (Dog, 4 yrs) • Tomorrow</p>
                  </div>
                </div>
                <div className="flex gap-4 items-start">
                  <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center shrink-0"><Syringe size={18} className="text-accent-foreground"/></div>
                  <div>
                    <p className="font-bold text-foreground text-sm">FVRCP Initial Series</p>
-                   <p className="text-xs text-muted font-medium">For "Luna" (Cat, 1 yr) • In 3 Days</p>
+                   <p className="text-xs text-muted font-medium">For &quot;Luna&quot; (Cat, 1 yr) • In 3 Days</p>
                  </div>
                </div>
                <button onClick={() => router.push('/dashboard/animals')} className="w-full text-center text-xs font-bold text-primary hover:underline mt-2">See all medical tasks</button>
