@@ -1,4 +1,5 @@
 'use client';
+import { DogMascot } from '@/components/illustrations/Mascots';
 import { useEffect, useState } from 'react';
 import { Animal } from '@/lib/types';
 import { motion } from 'framer-motion';
@@ -79,6 +80,9 @@ export default function AnimalDirectory() {
             </div>
           </motion.div>
         ))}
+      </div>
+      <div className="fixed bottom-20 left-10 pointer-events-none opacity-20 z-0">
+         <DogMascot state="happy" className="w-32 h-32" />
       </div>
     </div>
   );
