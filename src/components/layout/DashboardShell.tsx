@@ -35,7 +35,7 @@ export default function DashboardShell({ children, role, userName }: { children:
       title: 'MANAGEMENT',
       items: role === 'Admin' ? [
         { name: 'Staff & Users', icon: Users, path: '/dashboard/users' },
-        { name: 'Reports', icon: Activity, path: '#' },
+        { name: 'Reports', icon: Activity, path: '/dashboard/reports' },
         { name: 'Settings', icon: Users, path: '#' }
       ] : []
     }
