@@ -40,10 +40,10 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
         </div>
 
         <div className="flex flex-col gap-3 z-10 w-full md:w-auto">
-          <button className="bg-primary hover:bg-[#6a8767] text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-soft transition-colors">
+          <button onClick={(e) => { e.stopPropagation(); import('canvas-confetti').then(confetti => confetti.default({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#7C9A78', '#E8A87C', '#F2D06B'] })); }} className="bg-primary hover:bg-[#6a8767] text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-soft transition-colors">
             <Heart size={18} /> Start Adoption
           </button>
-          <button className="bg-surface border border-border hover:bg-black/5 text-foreground px-6 py-3 rounded-xl font-bold transition-colors">
+          <button onClick={() => alert('Edit Animal feature is coming soon!')} className="bg-surface border border-border hover:bg-black/5 text-foreground px-6 py-3 rounded-xl font-bold transition-colors">
             Edit Animal
           </button>
         </div>
