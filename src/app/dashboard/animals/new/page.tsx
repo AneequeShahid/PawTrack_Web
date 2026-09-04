@@ -9,11 +9,31 @@ import { DogMascot } from '@/components/illustrations/Mascots';
 export default function TrapNewAnimal() {
   const router = useRouter();
   const [species, setSpecies] = useState('Dog');
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    await fetch('/api/animals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        animalID: 'A' + Math.floor(Math.random() * 10000),
+        name: name,
+        age: parseInt(age),
+        gender: 'Unknown',
+        weight: 10,
+        status: 'Trapped',
+        species: species,
+        intakeDate: new Date().toISOString().split('T')[0],
+        medicalRecord: { vaccinations: [], surgeries: [], prescriptions: [], behavior: [] }
+      })
+    });
+    setLoading(false);
     confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 }, colors: ['#7C9A78', '#E8A87C', '#F2D06B'] });
-    setTimeout(() => router.push('/dashboard/admin'), 1500);
+    setTimeout(() => router.push('/dashboard/animals'), 1500);
   };
 
   return (
@@ -44,17 +64,17 @@ export default function TrapNewAnimal() {
           <div className="space-y-5">
             <div>
               <label className="block text-sm font-bold mb-2 text-foreground">Temporary Name</label>
-              <input required className="w-full bg-background border border-border p-3.5 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm placeholder:text-muted" placeholder="e.g. Bruno" />
+              <input required value={name} onChange={e => setName(e.target.value)} className="w-full bg-background border border-border p-3.5 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm placeholder:text-muted" placeholder="e.g. Bruno" />
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-foreground">Estimated Age (yrs)</label>
-              <input type="number" required className="w-full bg-background border border-border p-3.5 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm placeholder:text-muted" placeholder="e.g. 3" />
+              <input type="number" required value={age} onChange={e => setAge(e.target.value)} className="w-full bg-background border border-border p-3.5 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm placeholder:text-muted" placeholder="e.g. 3" />
             </div>
           </div>
 
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" 
-            className="w-full bg-primary hover:bg-[#6a8767] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-soft mt-8">
-            <Send size={18} /> Register Trapped Animal
+          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading}
+            className="w-full bg-primary hover:bg-[#6a8767] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-soft mt-8 disabled:opacity-50">
+            <Send size={18} /> {loading ? 'Registering...' : 'Register Trapped Animal'}
           </motion.button>
         </div>
 
