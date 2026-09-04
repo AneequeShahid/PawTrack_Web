@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MapPin, Send, Plus } from 'lucide-react';
+import { Send, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { DogMascot } from '@/components/illustrations/Mascots';
