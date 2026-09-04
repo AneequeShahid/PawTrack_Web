@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DogMascot, PawPrint } from '@/components/illustrations/Mascots';
 import { motion } from 'framer-motion';
-import { Shield, Heart, Activity } from 'lucide-react';
+
 
 export default function Login() {
   const [username, setUsername] = useState('admin');
@@ -61,11 +61,11 @@ export default function Login() {
               <input className="w-full p-3 bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary rounded-xl text-foreground outline-none transition-all shadow-sm" value={username} onChange={e=>setUsername(e.target.value)} />
             </div>
             <div>
-              <label className="text-sm text-foreground font-semibold mb-2 block">Password (use 'demo')</label>
+              <label className="text-sm text-foreground font-semibold mb-2 block">Password (use &apos;demo&apos;)</label>
               <input type="password" onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}
                 className={`w-full p-3 bg-background border rounded-xl outline-none transition-all shadow-sm ${error ? 'border-danger focus:border-danger focus:ring-danger' : 'border-border focus:border-primary focus:ring-primary'}`} 
                 value={password} onChange={e=>setPassword(e.target.value)} />
-              {error && <p className="text-danger text-sm mt-2 font-medium">Hmm, those details don't seem right.</p>}
+              {error && <p className="text-danger text-sm mt-2 font-medium">Hmm, those details don&apos;t seem right.</p>}
             </div>
             
             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading}

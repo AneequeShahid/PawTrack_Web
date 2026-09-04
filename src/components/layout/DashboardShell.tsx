@@ -66,7 +66,7 @@ export default function DashboardShell({ children, role }: { children: React.Rea
           <div className="absolute bottom-16 left-8 pointer-events-none group-hover:scale-110 transition-transform">
             <DogMascot state="sleeping" className="w-16 h-16 opacity-80" />
           </div>
-          <p className="text-xs text-muted mb-4 px-2 italic">"Taking care of tails, one day at a time."</p>
+          <p className="text-xs text-muted mb-4 px-2 italic">&quot;Taking care of tails, one day at a time.&quot;</p>
           <button onClick={handleLogout} className="w-full px-4 py-3 flex items-center gap-3 text-muted hover:text-danger hover:bg-danger/10 transition-all rounded-xl font-medium">
             <LogOut size={18} /> Sign Out
           </button>
@@ -78,7 +78,7 @@ export default function DashboardShell({ children, role }: { children: React.Rea
         <header className="h-20 border-b border-border flex items-center justify-between px-10 bg-surface/50 backdrop-blur-md shrink-0">
           <div>
             <h1 className="text-xl font-heading font-bold text-foreground">Good morning 👋</h1>
-            <p className="text-sm text-muted mt-1">Here's what's happening at PawTrack today.</p>
+            <p className="text-sm text-muted mt-1">Here&apos;s what&apos;s happening at PawTrack today.</p>
           </div>
           <div className="flex items-center gap-6 text-muted">
             <Search className="w-5 h-5 hover:text-foreground cursor-pointer transition-colors" />
