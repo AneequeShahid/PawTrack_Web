@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Animal } from '@/lib/types';
-import { Stethoscope, Syringe, Scissors, CheckCircle, ArrowRight } from 'lucide-react';
+import { Stethoscope, Syringe, CheckCircle, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
