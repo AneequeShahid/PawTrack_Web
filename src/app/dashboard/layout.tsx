@@ -5,11 +5,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const cookieStore = cookies();
   const sessionData = cookieStore.get('session')?.value;
   let role = 'User';
+  let userName = 'Guest';
   try {
     if (sessionData) {
-      role = JSON.parse(sessionData).role;
+      const parsed = JSON.parse(sessionData);
+      role = parsed.role;
+      userName = parsed.name || 'User';
     }
   } catch {}
 
-  return <DashboardShell role={role}>{children}</DashboardShell>;
+  return <DashboardShell role={role} userName={userName}>{children}</DashboardShell>;
 }
