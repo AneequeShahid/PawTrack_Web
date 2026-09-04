@@ -1,4 +1,4 @@
-export type AnimalStatus = 'Trapped' | 'Quarantined' | 'InSurgery' | 'Recovering' | 'Returned' | 'AdoptionPending' | 'Adopted' | 'Deceased';
+export type AnimalStatus = 'Trapped' | 'Quarantined' | 'InSurgery' | 'Recovering' | 'Returned' | 'Available' | 'AdoptionPending' | 'Adopted' | 'Deceased';
 export type UserRole = 'Admin' | 'Volunteer' | 'Veterinarian' | 'Adopter' | 'Donor';
 
 export interface VaccinationRecord {
