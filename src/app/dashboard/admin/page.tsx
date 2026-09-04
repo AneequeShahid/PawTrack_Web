@@ -96,7 +96,7 @@ export default function AdminDashboard() {
 }
 
 // Helper Components
-function StatCard({ title, value, icon: Icon, color, bg, trend, delay }: any) {
+function StatCard({ title, value, icon: Icon, color, bg, trend, delay }: { title: string, value: number, icon: React.ElementType, color: string, bg: string, trend: string, delay: number }) {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} whileHover={{ y: -2 }}
       className="bg-surface p-6 rounded-2xl border border-border shadow-soft flex flex-col justify-between group hover:shadow-md transition-all">
@@ -114,7 +114,7 @@ function StatCard({ title, value, icon: Icon, color, bg, trend, delay }: any) {
   );
 }
 
-function ActionButton({ title, icon: Icon }: any) {
+function ActionButton({ title, icon: Icon }: { title: string, icon: React.ElementType }) {
   return (
     <motion.button whileHover={{ y: -1, scale: 1.01 }} whileTap={{ scale: 0.99 }}
       className="w-full bg-surface border border-border hover:border-primary/50 p-4 rounded-xl flex items-center gap-3 text-left shadow-soft hover:shadow-md transition-all group">

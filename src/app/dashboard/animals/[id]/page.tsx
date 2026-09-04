@@ -83,7 +83,7 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
   );
 }
 
-function TimelineItem({ delay, icon: Icon, color, bg, title, date, desc }: any) {
+function TimelineItem({ delay, icon: Icon, color, bg, title, date, desc }: { delay: number, icon: React.ElementType, color: string, bg: string, title: string, date: string, desc: string }) {
   return (
     <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="flex gap-6 relative">
       <div className="absolute left-6 top-14 bottom-[-32px] w-0.5 bg-border -z-10" />
@@ -99,7 +99,7 @@ function TimelineItem({ delay, icon: Icon, color, bg, title, date, desc }: any) 
   );
 }
 
-function InfoRow({ icon: Icon, label, value, valueColor = "text-foreground" }: any) {
+function InfoRow({ icon: Icon, label, value, valueColor = "text-foreground" }: { icon: React.ElementType, label: string, value: string, valueColor?: string }) {
   return (
     <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-black/5 transition-colors">
       <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"><Icon className="text-primary w-5 h-5" /></div>
