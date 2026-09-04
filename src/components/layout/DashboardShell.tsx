@@ -29,8 +29,8 @@ export default function DashboardShell({ children, role, userName }: { children:
         { name: 'Adoptions', icon: Heart, path: '/dashboard/adoptions' },
         { name: 'Medical Records', icon: Activity, path: '/dashboard/veterinarian' },
         { name: 'Donations', icon: Heart, path: '/dashboard/donor' },
-        { name: 'Clinic Appointments', icon: Syringe, path: '#' },
-        { name: 'Foster Network', icon: Home, path: '#' }
+        { name: 'Clinic Appointments', icon: Syringe, path: '/dashboard/clinic' },
+        { name: 'Foster Network', icon: Home, path: '/dashboard/foster' }
       ] : []
     },
     {
