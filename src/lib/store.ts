@@ -4,10 +4,10 @@
 import { Animal, User, Colony, OperationBatch } from './types';
 import { mockAnimals, mockUsers, mockColonies, mockOperationBatches } from './seed-data';
 
-let animals: Animal[] = [...mockAnimals];
-let users: User[] = [...mockUsers];
-let colonies: Colony[] = [...mockColonies];
-let batches: OperationBatch[] = [...mockOperationBatches];
+const animals: Animal[] = [...mockAnimals];
+const users: User[] = [...mockUsers];
+const colonies: Colony[] = [...mockColonies];
+const batches: OperationBatch[] = [...mockOperationBatches];
 
 export const db = {
   animals: {
