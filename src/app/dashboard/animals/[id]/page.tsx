@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Animal } from '@/lib/types';
+import { Animal, Cat as CatType } from '@/lib/types';
 import { PawPrint, Syringe, ClipboardList, Stethoscope, ArrowRight, CheckCircle2, Cat, Dog } from 'lucide-react';
 
 export default function AnimalDetail({ params }: { params: { id: string } }) {
@@ -50,7 +50,7 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
             <li><strong className="text-white">Age:</strong> {animal.age} years</li>
             <li><strong className="text-white">Weight:</strong> {animal.weight} lbs</li>
             <li><strong className="text-white">Gender:</strong> {animal.gender}</li>
-            {animal.species === 'Cat' && <li><strong className="text-white">Ear Tipped:</strong> {(animal as any).earTipped ? 'Yes' : 'No'}</li>}
+            {animal.species === 'Cat' && <li><strong className="text-white">Ear Tipped:</strong> {(animal as CatType).earTipped ? 'Yes' : 'No'}</li>}
           </ul>
         </div>
 
