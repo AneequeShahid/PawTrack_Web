@@ -2,24 +2,51 @@
 import { useEffect, useState } from 'react';
 import { Animal, Cat as CatType } from '@/lib/types';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Stethoscope, Syringe, Scissors, Calendar, Heart } from 'lucide-react';
+import { ArrowLeft, Stethoscope, Syringe, Scissors, Calendar, Heart, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import confetti from 'canvas-confetti';
 
 export default function AnimalDetail({ params }: { params: { id: string } }) {
   const [animal, setAnimal] = useState<Animal | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
+  const fetchAnimal = () => {
     fetch('/api/animals').then(res => res.json()).then(data => setAnimal(data.find((a: Animal) => a.animalID === params.id)));
+  };
+
+  useEffect(() => {
+    fetchAnimal();
   }, [params.id]);
+
+  const handleDelete = async () => {
+    if (confirm('Are you sure you want to delete this animal?')) {
+      await fetch(`/api/animals/${params.id}`, { method: 'DELETE' });
+      router.push('/dashboard/animals');
+    }
+  };
+
+  const handleAdopt = async () => {
+    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#7C9A78', '#E8A87C', '#F2D06B'] });
+    await fetch(`/api/animals/${params.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'Adopted' })
+    });
+    fetchAnimal(); // Refresh to show Adopted status
+  };
 
   if (!animal) return <div className="p-20 text-center text-muted font-bold animate-pulse">Fetching details...</div>;
 
   return (
     <div className="space-y-8 pb-20">
-      <button onClick={() => router.back()} className="flex items-center gap-2 text-muted hover:text-foreground font-bold transition-colors">
-        <ArrowLeft size={18} /> Back to Animals
-      </button>
+      <div className="flex justify-between items-center">
+        <button onClick={() => router.push('/dashboard/animals')} className="flex items-center gap-2 text-muted hover:text-foreground font-bold transition-colors">
+          <ArrowLeft size={18} /> Back to Animals
+        </button>
+        <button onClick={handleDelete} className="flex items-center gap-2 text-danger hover:bg-danger/10 px-4 py-2 rounded-xl font-bold transition-colors text-sm">
+          <Trash2 size={16} /> Delete Animal
+        </button>
+      </div>
 
       <div className="bg-surface rounded-3xl p-8 md:p-12 border border-border shadow-soft flex flex-col md:flex-row gap-10 items-center relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
@@ -40,11 +67,13 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
         </div>
 
         <div className="flex flex-col gap-3 z-10 w-full md:w-auto">
-          <button onClick={(e) => { e.stopPropagation(); import('canvas-confetti').then(confetti => confetti.default({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#7C9A78', '#E8A87C', '#F2D06B'] })); }} className="bg-primary hover:bg-[#6a8767] text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-soft transition-colors">
-            <Heart size={18} /> Start Adoption
-          </button>
-          <button onClick={() => alert('Edit Animal feature is coming soon!')} className="bg-surface border border-border hover:bg-black/5 text-foreground px-6 py-3 rounded-xl font-bold transition-colors">
-            Edit Animal
+          {animal.status !== 'Adopted' && (
+            <button onClick={handleAdopt} className="bg-primary hover:bg-[#6a8767] text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-soft transition-colors">
+              <Heart size={18} /> Register Adoption
+            </button>
+          )}
+          <button onClick={() => alert('Edit form coming soon!')} className="bg-surface border border-border hover:bg-black/5 text-foreground px-6 py-3 rounded-xl font-bold transition-colors">
+            Edit Information
           </button>
         </div>
       </div>
@@ -74,8 +103,8 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
         <div className="space-y-6">
           <h2 className="text-2xl font-heading font-bold text-foreground">Quick Info</h2>
           <div className="bg-surface border border-border rounded-3xl p-6 shadow-soft space-y-4">
-            <InfoRow icon={Calendar} label="Intake Date" value="Aug 14, 2026" />
-            <InfoRow icon={Stethoscope} label="Health Status" value="Stable" valueColor="text-success" />
+            <InfoRow icon={Calendar} label="Intake Date" value={animal.intakeDate} />
+            <InfoRow icon={Stethoscope} label="Health Status" value={animal.status === 'Quarantined' || animal.status === 'InSurgery' ? 'Requires Attention' : 'Stable'} valueColor={animal.status === 'Quarantined' || animal.status === 'InSurgery' ? 'text-warning' : 'text-success'} />
           </div>
         </div>
       </div>

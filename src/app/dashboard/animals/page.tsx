@@ -2,26 +2,38 @@
 import { useEffect, useState } from 'react';
 import { Animal } from '@/lib/types';
 import { motion } from 'framer-motion';
-import { Search, Filter, Plus, ArrowRight } from 'lucide-react';
+import { Search, Filter, Plus, ArrowRight, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function AnimalDirectory() {
   const [animals, setAnimals] = useState<Animal[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
+  const fetchAnimals = () => {
     fetch('/api/animals').then(res => res.json()).then(data => setAnimals(data));
+  };
+
+  useEffect(() => {
+    fetchAnimals();
   }, []);
 
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    if (confirm('Are you sure you want to delete this animal?')) {
+      await fetch(`/api/animals/${id}`, { method: 'DELETE' });
+      fetchAnimals(); // Refresh data
+    }
+  };
+
   return (
-    <div className="space-y-8">
-      <div className="flex items-end justify-between">
+    <div className="space-y-8 pb-20">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-heading font-bold text-foreground">Animals</h1>
           <p className="text-muted mt-2">Manage every animal currently under PawTrack.</p>
         </div>
         <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => router.push('/dashboard/animals/new')}
-          className="bg-primary hover:bg-[#6a8767] text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2 shadow-soft transition-colors">
+          className="bg-primary hover:bg-[#6a8767] text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2 shadow-soft transition-colors whitespace-nowrap">
           <Plus size={18} /> Add Animal
         </motion.button>
       </div>
@@ -31,7 +43,7 @@ export default function AnimalDirectory() {
           <Search size={18} className="text-muted" />
           <input className="bg-transparent border-none outline-none w-full text-foreground placeholder:text-muted" placeholder="Search animals by name or ID..." />
         </div>
-        <button className="bg-surface border border-border px-5 py-3 rounded-xl text-foreground font-semibold flex items-center gap-2 hover:bg-black/5 transition-colors">
+        <button onClick={() => alert('Filtering options coming soon!')} className="bg-surface border border-border px-5 py-3 rounded-xl text-foreground font-semibold flex items-center gap-2 hover:bg-black/5 transition-colors">
           <Filter size={18} /> Filters
         </button>
       </div>
@@ -40,13 +52,17 @@ export default function AnimalDirectory() {
         {animals.map((animal, i) => (
           <motion.div key={animal.animalID} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
             onClick={() => router.push(`/dashboard/animals/${animal.animalID}`)}
-            whileHover={{ y: -4, scale: 1.01 }} className="bg-surface border border-border rounded-2xl p-6 shadow-soft hover:shadow-md cursor-pointer group transition-all">
+            whileHover={{ y: -4, scale: 1.01 }} className="bg-surface border border-border rounded-2xl p-6 shadow-soft hover:shadow-md cursor-pointer group transition-all relative">
             
+            <button onClick={(e) => handleDelete(e, animal.animalID)} className="absolute top-4 right-4 p-2 bg-white/50 hover:bg-danger/10 text-muted hover:text-danger rounded-full transition-colors opacity-0 group-hover:opacity-100">
+              <Trash2 size={16} />
+            </button>
+
             <div className="flex justify-between items-start mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-secondary/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 rounded-2xl bg-secondary/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm">
                 {animal.species === 'Dog' ? '🐕' : animal.species === 'Cat' ? '🐈' : '🐾'}
               </div>
-              <span className={`text-xs font-bold px-3 py-1 rounded-full border ${
+              <span className={`text-xs font-bold px-3 py-1 rounded-full border mr-8 ${
                 animal.status === 'Available' ? 'bg-success/10 text-success border-success/20' : 
                 animal.status === 'Quarantined' ? 'bg-warning/10 text-warning border-warning/20' : 
                 'bg-black/5 text-muted border-border'

@@ -4,7 +4,7 @@
 import { Animal, User, Colony, OperationBatch } from './types';
 import { mockAnimals, mockUsers, mockColonies, mockOperationBatches } from './seed-data';
 
-const animals: Animal[] = [...mockAnimals];
+let animals: Animal[] = [...mockAnimals];
 const users: User[] = [...mockUsers];
 const colonies: Colony[] = [...mockColonies];
 const batches: OperationBatch[] = [...mockOperationBatches];
@@ -18,6 +18,9 @@ export const db = {
       const idx = animals.findIndex(a => a.animalID === id);
       if (idx !== -1) { animals[idx] = { ...animals[idx], ...partial } as Animal; return animals[idx]; }
       return null;
+    },
+    remove: (id: string) => {
+      animals = animals.filter(a => a.animalID !== id);
     }
   },
   users: {
