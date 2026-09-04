@@ -1,5 +1,5 @@
 'use client';
-import { Activity, Package, AlertCircle } from 'lucide-react';
+import { Package } from 'lucide-react';
 import { DogMascot } from '@/components/illustrations/Mascots';
 
 export default function InventorySupplies() {
