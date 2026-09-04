@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Animal } from '@/lib/types';
 import { motion } from 'framer-motion';
-import { Syringe, ArrowRight, Scissors } from 'lucide-react';
+import { Syringe } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
 
@@ -39,7 +39,7 @@ export default function TNVRDashboard() {
       </div>
 
       <div className="flex flex-nowrap overflow-x-auto gap-6 pb-4 snap-x">
-        {columns.map((col, idx) => {
+        {columns.map((col) => {
           const colAnimals = tnvAnimals.filter(a => a.status === col.status);
           return (
             <div key={col.title} className={`flex-1 min-w-[300px] bg-surface border-t-4 ${col.color} rounded-2xl p-4 shadow-soft snap-center shrink-0`}>

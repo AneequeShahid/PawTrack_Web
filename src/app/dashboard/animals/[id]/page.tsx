@@ -16,6 +16,7 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     fetchAnimal();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   const handleDelete = async () => {

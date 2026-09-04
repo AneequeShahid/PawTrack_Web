@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Activity, Users, LogOut, Heart, Syringe, Menu, X, CheckSquare } from 'lucide-react';
+import { Home, Activity, Users, LogOut, Heart, Syringe, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DogMascot, PawPrint } from '@/components/illustrations/Mascots';
 

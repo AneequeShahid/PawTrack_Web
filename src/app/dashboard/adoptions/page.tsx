@@ -38,7 +38,7 @@ export default function AdoptionsDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {columns.map((col, idx) => {
+        {columns.map((col) => {
           const colAnimals = adoptionAnimals.filter(a => a.status === col.status);
           return (
             <div key={col.title} className={`bg-surface border-t-4 ${col.color} rounded-2xl p-4 shadow-soft`}>
