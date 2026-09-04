@@ -1,74 +1,111 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Animal, Cat as CatType } from '@/lib/types';
-import { PawPrint, Syringe, ClipboardList, Stethoscope, ArrowRight, CheckCircle2, Cat, Dog } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Stethoscope, Syringe, Scissors, Calendar, Heart } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function AnimalDetail({ params }: { params: { id: string } }) {
   const [animal, setAnimal] = useState<Animal | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     fetch('/api/animals').then(res => res.json()).then(data => setAnimal(data.find((a: Animal) => a.animalID === params.id)));
   }, [params.id]);
 
-  if (!animal) return <div className="text-white animate-pulse flex flex-col items-center justify-center py-20"><PawPrint size={48} className="text-[#5B8DEF] mb-4" /> Loading details...</div>;
-
-  const statusPipeline = ['Trapped', 'Quarantined', 'InSurgery', 'Recovering', 'Returned', 'AdoptionPending', 'Adopted'];
-  const currentIndex = statusPipeline.indexOf(animal.status);
+  if (!animal) return <div className="p-20 text-center text-muted font-bold animate-pulse">Fetching details...</div>;
 
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-out text-white space-y-8 relative">
-      <div className="absolute top-0 right-10 opacity-20 pointer-events-none animate-bounce" style={{ animationDuration: '3s' }}>
-        {animal.species === 'Dog' ? <Dog size={120} /> : <Cat size={120} />}
+    <div className="space-y-8 pb-20">
+      <button onClick={() => router.back()} className="flex items-center gap-2 text-muted hover:text-foreground font-bold transition-colors">
+        <ArrowLeft size={18} /> Back to Animals
+      </button>
+
+      <div className="bg-surface rounded-3xl p-8 md:p-12 border border-border shadow-soft flex flex-col md:flex-row gap-10 items-center relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+        
+        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-48 h-48 rounded-full bg-secondary/20 border-4 border-surface shadow-lg flex items-center justify-center text-8xl shrink-0 z-10">
+          {animal.species === 'Dog' ? '🐕' : animal.species === 'Cat' ? '🐈' : '🐾'}
+        </motion.div>
+
+        <div className="flex-1 z-10 text-center md:text-left">
+          <h1 className="text-5xl font-heading font-bold text-foreground mb-3">{animal.name}</h1>
+          <p className="text-xl text-muted font-medium mb-6">{animal.species} • {animal.age} years • {animal.gender} • {animal.weight} lbs</p>
+          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+            <span className="bg-success/10 text-success border border-success/20 px-4 py-2 rounded-full font-bold text-sm">● {animal.status}</span>
+            {animal.species === 'Cat' && (animal as CatType).earTipped && (
+              <span className="bg-accent/20 text-accent-foreground border border-accent/30 px-4 py-2 rounded-full font-bold text-sm">Ear Tipped</span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3 z-10 w-full md:w-auto">
+          <button className="bg-primary hover:bg-[#6a8767] text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-soft transition-colors">
+            <Heart size={18} /> Start Adoption
+          </button>
+          <button className="bg-surface border border-border hover:bg-black/5 text-foreground px-6 py-3 rounded-xl font-bold transition-colors">
+            Edit Animal
+          </button>
+        </div>
       </div>
 
-      <h1 className="text-4xl font-bold flex items-center gap-4">
-        {animal.name} <span className="text-lg font-mono text-[#5B8DEF] bg-[#141C26] px-3 py-1 rounded-full border border-[#263241]">ID: {animal.animalID}</span>
-      </h1>
-
-      <div className="bg-[#141C26] p-8 rounded-xl border border-[#263241] shadow-lg relative overflow-hidden">
-        <h2 className="text-xl font-semibold mb-6 flex items-center gap-2"><ArrowRight className="text-[#F5A623]"/> TNVR Pipeline Status</h2>
-        <div className="flex items-center justify-between w-full relative z-10">
-          {statusPipeline.map((step, idx) => (
-            <div key={step} className="flex flex-col items-center flex-1 relative">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 border-4 border-[#141C26] transition-colors duration-500 ${idx <= currentIndex ? 'bg-[#4ADE80] text-black' : 'bg-[#263241] text-gray-500'}`}>
-                {idx <= currentIndex ? <CheckCircle2 size={16} /> : <div className="w-2 h-2 rounded-full bg-current" />}
-              </div>
-              <span className={`text-xs mt-2 font-medium ${idx <= currentIndex ? 'text-[#4ADE80]' : 'text-gray-500'}`}>{step}</span>
-              {idx !== statusPipeline.length - 1 && (
-                <div className={`absolute top-4 left-1/2 w-full h-1 -z-10 transition-colors duration-500 ${idx < currentIndex ? 'bg-[#4ADE80]' : 'bg-[#263241]'}`} />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div className="lg:col-span-2 space-y-6">
+          <h2 className="text-2xl font-heading font-bold text-foreground">Medical Timeline</h2>
+          <div className="bg-surface border border-border rounded-3xl p-8 shadow-soft">
+            <div className="space-y-8">
+              {animal.medicalRecord.vaccinations.length === 0 && animal.medicalRecord.surgeries.length === 0 && (
+                <div className="text-center py-10 text-muted font-medium">No medical records yet.</div>
               )}
+              
+              {animal.medicalRecord.vaccinations.map((v, i) => (
+                <TimelineItem key={`v-${i}`} delay={i * 0.1} icon={Syringe} color="text-secondary" bg="bg-secondary/10"
+                  title="Vaccination Administered" date={v.date} desc={v.vaccineType} />
+              ))}
+              
+              {animal.medicalRecord.surgeries.map((s, i) => (
+                <TimelineItem key={`s-${i}`} delay={(animal.medicalRecord.vaccinations.length + i) * 0.1} icon={Scissors} color="text-warning" bg="bg-warning/10"
+                  title="Surgery Performed" date={s.date} desc={s.procedure} />
+              ))}
             </div>
-          ))}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <h2 className="text-2xl font-heading font-bold text-foreground">Quick Info</h2>
+          <div className="bg-surface border border-border rounded-3xl p-6 shadow-soft space-y-4">
+            <InfoRow icon={Calendar} label="Intake Date" value="Aug 14, 2026" />
+            <InfoRow icon={Stethoscope} label="Health Status" value="Stable" valueColor="text-success" />
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-[#141C26] p-6 rounded-xl border border-[#263241] hover:border-[#5B8DEF] transition-colors group">
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2 group-hover:text-[#5B8DEF] transition-colors"><ClipboardList size={20}/> Core Information</h3>
-          <ul className="space-y-3 text-gray-300">
-            <li><strong className="text-white">Species:</strong> {animal.species}</li>
-            <li><strong className="text-white">Age:</strong> {animal.age} years</li>
-            <li><strong className="text-white">Weight:</strong> {animal.weight} lbs</li>
-            <li><strong className="text-white">Gender:</strong> {animal.gender}</li>
-            {animal.species === 'Cat' && <li><strong className="text-white">Ear Tipped:</strong> {(animal as CatType).earTipped ? 'Yes' : 'No'}</li>}
-          </ul>
-        </div>
+function TimelineItem({ delay, icon: Icon, color, bg, title, date, desc }: any) {
+  return (
+    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="flex gap-6 relative">
+      <div className="absolute left-6 top-14 bottom-[-32px] w-0.5 bg-border -z-10" />
+      <div className={`w-12 h-12 rounded-2xl ${bg} flex items-center justify-center shrink-0 border border-current/10 shadow-sm z-10`}>
+        <Icon className={`${color} w-5 h-5`} />
+      </div>
+      <div className="pt-2 pb-4">
+        <h4 className="font-bold text-foreground text-lg">{title}</h4>
+        <p className="text-muted text-sm font-semibold mb-1">{date}</p>
+        <p className="text-foreground/80 font-medium">{desc}</p>
+      </div>
+    </motion.div>
+  );
+}
 
-        <div className="bg-[#141C26] p-6 rounded-xl border border-[#263241] hover:border-[#F87171] transition-colors group">
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2 group-hover:text-[#F87171] transition-colors"><Syringe size={20}/> Medical History</h3>
-          {animal.medicalRecord.vaccinations.length > 0 ? (
-            <ul className="space-y-2 text-sm text-gray-300">
-              {animal.medicalRecord.vaccinations.map((v, i) => <li key={i}>💉 {v.date}: {v.vaccineType}</li>)}
-            </ul>
-          ) : <p className="text-gray-500 text-sm">No vaccinations on record.</p>}
-          
-          <h4 className="font-semibold mt-4 mb-2 flex items-center gap-2"><Stethoscope size={16}/> Surgeries</h4>
-          {animal.medicalRecord.surgeries.length > 0 ? (
-            <ul className="space-y-2 text-sm text-gray-300">
-              {animal.medicalRecord.surgeries.map((s, i) => <li key={i}>✂️ {s.date}: {s.procedure}</li>)}
-            </ul>
-          ) : <p className="text-gray-500 text-sm">No surgeries on record.</p>}
-        </div>
+function InfoRow({ icon: Icon, label, value, valueColor = "text-foreground" }: any) {
+  return (
+    <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-black/5 transition-colors">
+      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"><Icon className="text-primary w-5 h-5" /></div>
+      <div>
+        <p className="text-xs text-muted font-bold uppercase">{label}</p>
+        <p className={`font-bold ${valueColor}`}>{value}</p>
       </div>
     </div>
   );
