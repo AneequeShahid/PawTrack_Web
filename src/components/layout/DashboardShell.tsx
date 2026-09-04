@@ -28,14 +28,18 @@ export default function DashboardShell({ children, role, userName }: { children:
         { name: 'TNVR Pipeline', icon: Syringe, path: '/dashboard/tnvr' },
         { name: 'Adoptions', icon: Heart, path: '/dashboard/adoptions' },
         { name: 'Medical Records', icon: Activity, path: '/dashboard/veterinarian' },
-        { name: 'Donations', icon: Heart, path: '/dashboard/donor' }
+        { name: 'Donations', icon: Heart, path: '/dashboard/donor' },
+        { name: 'Clinic Appointments', icon: Syringe, path: '#' },
+        { name: 'Foster Network', icon: Home, path: '#' }
       ] : []
     },
     {
       title: 'MANAGEMENT',
       items: role === 'Admin' ? [
         { name: 'Staff & Users', icon: Users, path: '/dashboard/users' },
-        { name: 'Reports', icon: Activity, path: '/dashboard/reports' },
+        { name: 'Reports & Analytics', icon: Activity, path: '/dashboard/reports' },
+        { name: 'Volunteer Tracking', icon: Users, path: '#' },
+        { name: 'Inventory & Supplies', icon: Activity, path: '#' },
         { name: 'Settings', icon: Users, path: '#' }
       ] : []
     }
