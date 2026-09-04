@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+
 import { BarChart, PieChart, TrendingUp, Activity, FileText } from 'lucide-react';
 
 export default function ReportsDashboard() {
