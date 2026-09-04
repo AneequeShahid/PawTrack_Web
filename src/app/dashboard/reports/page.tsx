@@ -13,7 +13,7 @@ export default function ReportsDashboard() {
 
   const handleDownloadCSV = () => {
     const headers = ['Animal ID,Name,Species,Breed,Age,Gender,Weight,Status,Intake Date\n'];
-    const rows = animals.map(a => `${a.animalID},${a.name},${a.species},${a.breed || 'N/A'},${a.age},${a.gender},${a.weight},${a.status},${a.intakeDate}\n`);
+    const rows = animals.map(a => `${a.animalID},${a.name},${a.species},${'breed' in a ? a.breed : 'N/A'},${a.age},${a.gender},${a.weight},${a.status},${a.intakeDate}\n`);
     const csvContent = "data:text/csv;charset=utf-8," + headers.concat(rows).join("");
     
     const encodedUri = encodeURI(csvContent);
