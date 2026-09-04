@@ -3,12 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --background: #0B0F14;
-  --foreground: #ffffff;
+  --background: #F8F7F3;
+  --foreground: #17211B;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Custom scrollbar for a polished look */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #E5E5DF; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #7C9A78; }
