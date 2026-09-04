@@ -1,17 +1,27 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Animal, Cat as CatType } from '@/lib/types';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Stethoscope, Syringe, Scissors, Calendar, Heart, Trash2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Stethoscope, Syringe, Scissors, Calendar, Heart, Trash2, Edit3, X, Save } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
 
 export default function AnimalDetail({ params }: { params: { id: string } }) {
   const [animal, setAnimal] = useState<Animal | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editAge, setEditAge] = useState(0);
   const router = useRouter();
 
   const fetchAnimal = () => {
-    fetch('/api/animals').then(res => res.json()).then(data => setAnimal(data.find((a: Animal) => a.animalID === params.id)));
+    fetch('/api/animals').then(res => res.json()).then(data => {
+      const a = data.find((a: Animal) => a.animalID === params.id);
+      setAnimal(a);
+      if (a) {
+        setEditName(a.name);
+        setEditAge(a.age);
+      }
+    });
   };
 
   useEffect(() => {
@@ -33,13 +43,23 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: 'Adopted' })
     });
-    fetchAnimal(); // Refresh to show Adopted status
+    fetchAnimal();
+  };
+
+  const handleSaveEdit = async () => {
+    await fetch(`/api/animals/${params.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: editName, age: editAge })
+    });
+    setIsEditing(false);
+    fetchAnimal();
   };
 
   if (!animal) return <div className="p-20 text-center text-muted font-bold animate-pulse">Fetching details...</div>;
 
   return (
-    <div className="space-y-8 pb-20">
+    <div className="space-y-8 pb-20 relative">
       <div className="flex justify-between items-center">
         <button onClick={() => router.push('/dashboard/animals')} className="flex items-center gap-2 text-muted hover:text-foreground font-bold transition-colors">
           <ArrowLeft size={18} /> Back to Animals
@@ -73,8 +93,8 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
               <Heart size={18} /> Register Adoption
             </button>
           )}
-          <button onClick={() => alert('Edit form coming soon!')} className="bg-surface border border-border hover:bg-black/5 text-foreground px-6 py-3 rounded-xl font-bold transition-colors">
-            Edit Information
+          <button onClick={() => setIsEditing(true)} className="bg-surface border border-border hover:bg-black/5 text-foreground px-6 py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
+            <Edit3 size={18} /> Edit Information
           </button>
         </div>
       </div>
@@ -109,6 +129,33 @@ export default function AnimalDetail({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      <AnimatePresence>
+        {isEditing && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsEditing(false)} className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-surface border border-border rounded-3xl p-8 max-w-md w-full shadow-lg relative z-10">
+              <button onClick={() => setIsEditing(false)} className="absolute top-6 right-6 text-muted hover:text-foreground transition-colors"><X size={20} /></button>
+              <h2 className="text-2xl font-heading font-bold mb-6 text-foreground">Edit {animal.name}</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-bold mb-2 text-foreground">Name</label>
+                  <input value={editName} onChange={e => setEditName(e.target.value)} className="w-full bg-background border border-border p-3.5 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold mb-2 text-foreground">Age (years)</label>
+                  <input type="number" value={editAge} onChange={e => setEditAge(Number(e.target.value))} className="w-full bg-background border border-border p-3.5 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                </div>
+                <button onClick={handleSaveEdit} className="w-full bg-primary hover:bg-[#6a8767] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 mt-4 transition-colors">
+                  <Save size={18} /> Save Changes
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }
